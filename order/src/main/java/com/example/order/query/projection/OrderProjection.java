@@ -9,6 +9,7 @@ import com.example.order.model.enums.OrderStatus;
 import com.example.order.query.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.axonframework.config.ProcessingGroup;
 import org.axonframework.eventhandling.EventHandler;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@ProcessingGroup("order-group")
 public class OrderProjection {
 
     private final OrderRepository orderRepository;

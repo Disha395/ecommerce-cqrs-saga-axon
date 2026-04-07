@@ -36,8 +36,16 @@ public class OrderCommandController {
                         .orderId(orderId)
                         .customerId(request.getCustomerId())
                         .shippingAddress(request.getShippingAddress())
-                        .items(request.getItems())
                         .totalAmount(request.getTotalAmount())
+                        .items(request.getItems().stream()
+                                .map(item -> CreateOrderCommand.OrderItemDTO.builder()
+                                        .productId(item.getProductId())
+                                        .productName(item.getProductName())
+                                        .quantity(item.getQuantity())
+                                        .unitPrice(item.getUnitPrice())
+                                        .subTotal(item.getSubTotal())
+                                        .build())
+                                .collect(java.util.stream.Collectors.toList()))
                         .build()
         );
 
