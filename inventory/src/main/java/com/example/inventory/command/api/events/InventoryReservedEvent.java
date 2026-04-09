@@ -8,6 +8,7 @@ import lombok.Data;
 public class InventoryReservedEvent {
     private final String inventoryId;
     private final String productId;
+    private final String orderId;
     private final String reservationId; //used by projection
     private final Integer quantity;
 
