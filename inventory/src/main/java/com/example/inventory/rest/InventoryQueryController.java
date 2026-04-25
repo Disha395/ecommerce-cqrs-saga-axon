@@ -25,7 +25,7 @@ public class InventoryQueryController {
     @GetMapping("/{inventoryId}")
     @Operation(summary = "Get inventory by ID")
     public CompletableFuture<InventoryResponse> getInventoryById(
-            @PathVariable String inventoryId) {
+            @PathVariable("inventoryId") String inventoryId) {
         log.info("Dispatching GetInventoryByIdQuery for inventoryId: {}", inventoryId);
         return queryGateway.query(
                 new GetInventoryByIdQuery(inventoryId),
@@ -36,7 +36,7 @@ public class InventoryQueryController {
     @GetMapping("/product/{productId}")
     @Operation(summary = "Get inventory by product ID")
     public CompletableFuture<InventoryResponse> getInventoryByProductId(
-            @PathVariable String productId) {
+            @PathVariable("productId") String productId) {
         log.info("Dispatching GetInventoryByProductIdQuery for productId: {}", productId);
         return queryGateway.query(
                 new GetInventoryByProductIdQuery(productId),
