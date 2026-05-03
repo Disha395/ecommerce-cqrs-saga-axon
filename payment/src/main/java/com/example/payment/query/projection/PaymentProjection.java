@@ -21,8 +21,14 @@ public class PaymentProjection {
 
     private final PaymentRepository paymentRepository;
 
+
     @EventHandler
     public void on(PaymentProcessedEvent event) {
+        if (paymentRepository.findByOrderId(event.getOrderId()).isPresent()) {
+            log.warn("Duplicate payment detected for orderId: {}", event.getOrderId());
+            return;
+        }
+
         log.info("Projecting PaymentProcessedEvent for orderId: {}",
                 event.getOrderId());
 
