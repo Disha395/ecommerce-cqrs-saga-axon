@@ -1,4 +1,4 @@
-package com.example.order.command.api.commands;
+package com.example.common.commands.order;
 
 import lombok.Builder;
 import lombok.Data;

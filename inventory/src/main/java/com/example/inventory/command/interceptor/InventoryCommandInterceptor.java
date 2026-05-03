@@ -1,7 +1,7 @@
 package com.example.inventory.command.interceptor;
 
-import com.example.inventory.command.api.commands.CreateInventoryCommand;
-import com.example.inventory.command.api.commands.ReserveInventoryCommand;
+import com.example.common.commands.inventory.CreateInventoryCommand;
+import com.example.common.commands.inventory.ReserveInventoryCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandMessage;
 import org.axonframework.messaging.MessageDispatchInterceptor;

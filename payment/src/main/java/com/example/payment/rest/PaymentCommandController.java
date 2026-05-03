@@ -1,7 +1,7 @@
 package com.example.payment.rest;
 
-import com.example.payment.command.api.commands.CancelPaymentCommand;
-import com.example.payment.command.api.commands.ProcessPaymentCommand;
+import com.example.common.commands.payment.CancelPaymentCommand;
+import com.example.common.commands.payment.ProcessPaymentCommand;
 import com.example.payment.rest.dto.ProcessPaymentRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

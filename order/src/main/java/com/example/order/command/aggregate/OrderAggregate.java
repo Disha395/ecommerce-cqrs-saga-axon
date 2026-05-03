@@ -1,8 +1,8 @@
 package com.example.order.command.aggregate;
 
-import com.example.order.command.api.commands.CancelOrderCommand;
-import com.example.order.command.api.commands.ConfirmOrderCommand;
-import com.example.order.command.api.commands.CreateOrderCommand;
+import com.example.common.commands.order.CancelOrderCommand;
+import com.example.common.commands.order.ConfirmOrderCommand;
+import com.example.common.commands.order.CreateOrderCommand;
 import com.example.common.events.order.OrderCancelledEvent;
 import com.example.common.events.order.OrderConfirmedEvent;
 import com.example.common.events.order.OrderCreatedEvent;

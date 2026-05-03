@@ -1,7 +1,7 @@
 package com.example.payment.command.aggregate;
 
-import com.example.payment.command.api.commands.CancelPaymentCommand;
-import com.example.payment.command.api.commands.ProcessPaymentCommand;
+import com.example.common.commands.payment.CancelPaymentCommand;
+import com.example.common.commands.payment.ProcessPaymentCommand;
 import com.example.common.events.payment.PaymentCancelledEvent;
 import com.example.common.events.payment.PaymentFailedEvent;
 import com.example.common.events.payment.PaymentProcessedEvent;

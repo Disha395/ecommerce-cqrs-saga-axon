@@ -53,5 +53,8 @@ axon:
     processors:
       order-group:
         mode: subscribing
+      order-saga-group:
+        mode: tracking
+        initial-segment-count: 1
   axonserver:
     servers: localhost:8124

@@ -1,6 +1,6 @@
 package com.example.payment.command.interceptor;
 
-import com.example.payment.command.api.commands.ProcessPaymentCommand;
+import com.example.common.commands.payment.ProcessPaymentCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandMessage;
 import org.axonframework.messaging.MessageDispatchInterceptor;

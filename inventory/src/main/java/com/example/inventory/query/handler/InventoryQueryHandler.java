@@ -3,7 +3,7 @@ package com.example.inventory.query.handler;
 import com.example.inventory.model.enity.InventoryEntity;
 import com.example.inventory.model.enity.InventoryReservationEntity;
 import com.example.inventory.query.api.queries.GetInventoryByIdQuery;
-import com.example.inventory.query.api.queries.GetInventoryByProductIdQuery;
+import com.example.common.queries.inventory.GetInventoryByProductIdQuery;
 import com.example.inventory.query.api.response.InventoryReservationResponse;
 import com.example.inventory.query.api.response.InventoryResponse;
 import com.example.inventory.query.repository.InventoryRepository;
@@ -35,17 +35,25 @@ public class InventoryQueryHandler {
         return mapToResponse(inventory);
     }
 
+
+    // for Saga — returns lightweight common response
     @QueryHandler
-    public InventoryResponse handle(GetInventoryByProductIdQuery query) {
-        log.info("Handling GetInventoryByProductIdQuery for productId: {}",
-                query.getProductId());
+    public com.example.common.dto.inventory.InventoryResponse handle(
+            GetInventoryByProductIdQuery query) {
 
         InventoryEntity inventory = inventoryRepository
                 .findByProductId(query.getProductId())
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Inventory not found, productId: " + query.getProductId()));
 
-        return mapToResponse(inventory);
+        // map to common lightweight response
+        return com.example.common.dto.inventory.InventoryResponse.builder()
+                .inventoryId(inventory.getInventoryId())
+                .productId(inventory.getProductId())
+                .productName(inventory.getProductName())
+                .availableQuantity(inventory.getAvailableQuantity())
+                .reservedQuantity(inventory.getReservedQuantity())
+                .build();
     }
 
     private InventoryResponse mapToResponse(InventoryEntity inventory) {

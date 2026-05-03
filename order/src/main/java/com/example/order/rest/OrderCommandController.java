@@ -1,8 +1,7 @@
 package com.example.order.rest;
 
-import com.example.order.command.api.commands.CancelOrderCommand;
-import com.example.order.command.api.commands.CreateOrderCommand;
-import com.example.order.model.enums.OrderStatus;
+import com.example.common.commands.order.CancelOrderCommand;
+import com.example.common.commands.order.CreateOrderCommand;
 
 import com.example.order.rest.dto.CreateOrderRequest;
 import io.swagger.v3.oas.annotations.Operation;

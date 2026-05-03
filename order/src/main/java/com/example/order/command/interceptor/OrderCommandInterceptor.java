@@ -1,6 +1,6 @@
 package com.example.order.command.interceptor;
 
-import com.example.order.command.api.commands.CreateOrderCommand;
+import com.example.common.commands.order.CreateOrderCommand;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandMessage;
 import org.axonframework.messaging.MessageDispatchInterceptor;

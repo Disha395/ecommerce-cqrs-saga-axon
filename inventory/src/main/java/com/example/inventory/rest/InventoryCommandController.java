@@ -1,6 +1,6 @@
 package com.example.inventory.rest;
 
-import com.example.inventory.command.api.commands.CreateInventoryCommand;
+import com.example.common.commands.inventory.CreateInventoryCommand;
 import com.example.inventory.rest.dto.CreateInventoryRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

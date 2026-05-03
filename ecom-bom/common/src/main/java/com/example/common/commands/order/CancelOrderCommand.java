@@ -1,4 +1,4 @@
-package com.example.payment.command.api.commands;
+package com.example.common.commands.order;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,10 +6,9 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 @Data
 @AllArgsConstructor
-public class CancelPaymentCommand {
+public class CancelOrderCommand {
 
     @TargetAggregateIdentifier
-    private final String paymentId;
     private final String orderId;
-    private final String reason;
+    private final String reason;        // why it was cancelled — useful for audit/saga compensation
 }

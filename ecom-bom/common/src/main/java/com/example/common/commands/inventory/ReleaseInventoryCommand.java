@@ -1,4 +1,4 @@
-package com.example.inventory.command.api.commands;
+package com.example.common.commands.inventory;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

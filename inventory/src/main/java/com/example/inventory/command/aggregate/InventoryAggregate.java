@@ -1,7 +1,10 @@
 package com.example.inventory.command.aggregate;
 
+import com.example.common.commands.inventory.ConfirmInventoryReservationCommand;
+import com.example.common.commands.inventory.CreateInventoryCommand;
+import com.example.common.commands.inventory.ReleaseInventoryCommand;
+import com.example.common.commands.inventory.ReserveInventoryCommand;
 import com.example.common.events.inventory.*;
-import com.example.inventory.command.api.commands.*;
 import com.example.inventory.model.enums.InventoryStatus;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
