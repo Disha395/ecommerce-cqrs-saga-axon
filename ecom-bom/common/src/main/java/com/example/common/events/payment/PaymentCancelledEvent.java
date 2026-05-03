@@ -1,4 +1,4 @@
-package com.example.payment.command.api.events;
+package com.example.common.events.payment;
 
 import lombok.Builder;
 import lombok.Data;

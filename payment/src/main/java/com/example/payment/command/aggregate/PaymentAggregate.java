@@ -2,9 +2,9 @@ package com.example.payment.command.aggregate;
 
 import com.example.payment.command.api.commands.CancelPaymentCommand;
 import com.example.payment.command.api.commands.ProcessPaymentCommand;
-import com.example.payment.command.api.events.PaymentCancelledEvent;
-import com.example.payment.command.api.events.PaymentFailedEvent;
-import com.example.payment.command.api.events.PaymentProcessedEvent;
+import com.example.common.events.payment.PaymentCancelledEvent;
+import com.example.common.events.payment.PaymentFailedEvent;
+import com.example.common.events.payment.PaymentProcessedEvent;
 import com.example.payment.model.enums.PaymentStatus;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

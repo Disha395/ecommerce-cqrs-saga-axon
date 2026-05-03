@@ -1,8 +1,8 @@
 package com.example.order.query.projection;
 
-import com.example.order.command.api.events.OrderCancelledEvent;
-import com.example.order.command.api.events.OrderConfirmedEvent;
-import com.example.order.command.api.events.OrderCreatedEvent;
+import com.example.common.events.order.OrderCancelledEvent;
+import com.example.common.events.order.OrderConfirmedEvent;
+import com.example.common.events.order.OrderCreatedEvent;
 import com.example.order.model.entity.OrderEntity;
 import com.example.order.model.entity.OrderItemEntity;
 import com.example.order.model.enums.OrderStatus;

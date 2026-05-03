@@ -1,4 +1,4 @@
-package com.example.order.command.api.events;
+package com.example.common.events.order;
 
 import lombok.Builder;
 import lombok.Data;

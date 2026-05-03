@@ -1,6 +1,6 @@
 package com.example.inventory.query.projection;
 
-import com.example.inventory.command.api.events.*;
+import com.example.common.events.inventory.*;
 import com.example.inventory.model.enity.InventoryEntity;
 import com.example.inventory.model.enity.InventoryReservationEntity;
 import com.example.inventory.model.enums.InventoryStatus;

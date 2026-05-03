@@ -1,9 +1,8 @@
-// query/projection/PaymentProjection.java
 package com.example.payment.query.projection;
 
-import com.example.payment.command.api.events.PaymentCancelledEvent;
-import com.example.payment.command.api.events.PaymentFailedEvent;
-import com.example.payment.command.api.events.PaymentProcessedEvent;
+import com.example.common.events.payment.PaymentCancelledEvent;
+import com.example.common.events.payment.PaymentFailedEvent;
+import com.example.common.events.payment.PaymentProcessedEvent;
 import com.example.payment.model.entity.PaymentEntity;
 import com.example.payment.model.enums.PaymentStatus;
 import com.example.payment.query.repository.PaymentRepository;

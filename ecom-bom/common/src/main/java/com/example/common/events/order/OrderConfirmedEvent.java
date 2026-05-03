@@ -1,12 +1,11 @@
-package com.example.order.command.api.events;
+package com.example.common.events.order;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class OrderCancelledEvent {
+public class OrderConfirmedEvent {
 
     private final String orderId;
-    private final String reason;
 }

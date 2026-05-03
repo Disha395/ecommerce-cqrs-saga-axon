@@ -1,4 +1,4 @@
-package com.example.inventory.command.api.events;
+package com.example.common.events.inventory;
 
 import lombok.Builder;
 import lombok.Data;
