@@ -1,6 +1,7 @@
 package com.example.order;
 
 import com.example.common.config.AxonConfig;
+import com.example.common.exception.GlobalExceptionHandler;
 import com.example.order.command.interceptor.OrderCommandInterceptor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,7 +13,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@Import(AxonConfig.class)
+@Import({AxonConfig.class, GlobalExceptionHandler.class})
 public class OrderApplication {
 
 	public static void main(String[] args) {

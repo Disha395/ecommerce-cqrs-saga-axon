@@ -1,6 +1,7 @@
 package com.example.payment;
 
 import com.example.common.config.AxonConfig;
+import com.example.common.exception.GlobalExceptionHandler;
 import com.example.payment.command.interceptor.PaymentCommandInterceptor;
 import org.axonframework.commandhandling.CommandBus;
 import org.axonframework.config.EventProcessingConfigurer;
@@ -12,7 +13,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
-@Import(AxonConfig.class)
+@Import({AxonConfig.class, GlobalExceptionHandler.class})
 public class PaymentApplication {
 
 	public static void main(String[] args) {
