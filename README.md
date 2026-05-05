@@ -3,6 +3,22 @@
 A production-grade e-commerce backend built with CQRS, Event Sourcing, and Saga orchestration using Axon Framework and Spring Boot 3.
 
 ---
+
+## Tech Stack
+
+- Java 21
+- Spring Boot 3.3
+- Axon Framework 4.9.3 (CQRS + Event Sourcing + Saga)
+- Axon Server 4.6.11 (Event Store)
+- Spring Cloud Netflix Eureka (Service Discovery)
+- Spring Cloud Gateway (API Gateway)
+- H2 Database (file-based, one per microservice)
+- Docker + Docker Compose
+- Maven
+- SpringDoc OpenAPI (Swagger UI)
+
+---
+
 ## Architecture
 
 ```mermaid
@@ -61,7 +77,10 @@ graph TB
     InventoryMS --> Eureka
     PaymentMS --> Eureka
 ```
-## Saga Flow
+
+---
+
+## Saga — Order Fulfillment Flow
 
 ```mermaid
 sequenceDiagram
@@ -102,18 +121,26 @@ sequenceDiagram
     end
 ```
 
-## Tech Stack
+---
 
-- Java 21
-- Spring Boot 3.3
-- Axon Framework 4.9.3 (CQRS + Event Sourcing + Saga)
-- Axon Server 4.6.11 (Event Store)
-- Spring Cloud Netflix Eureka (Service Discovery)
-- Spring Cloud Gateway (API Gateway)
-- H2 Database (file-based, one per microservice)
-- Docker + Docker Compose
-- Maven
-- SpringDoc OpenAPI (Swagger UI)
+## CQRS Pattern (per microservice)
+
+```
+Write Side                          Read Side
+----------                          ---------
+REST Controller                     REST Controller
+     |                                   |
+CommandGateway                      QueryGateway
+     |                                   |
+Interceptor (validate)              QueryHandler
+     |                                   |
+Aggregate (business logic)          Repository (H2)
+     |                                   ^
+AggregateLifecycle.apply(event)          |
+     |                              Projection
+     v                              (@EventHandler)
+Axon Event Store <------------------builds read model
+```
 
 ---
 
@@ -136,77 +163,6 @@ Service registry. All microservices register here on startup.
 
 ### Axon Server — port 8024 / 8124
 Event store and message routing. Stores all events and routes commands, events, and queries between microservices.
-
----
-
-## Architecture
-
-```
-Client
-  |
-  v
-API Gateway (8072)
-  |
-  |---> Order MS (8080)
-  |---> Inventory MS (8081)
-  |---> Payment MS (8082)
-
-All MS connect to:
-  - Axon Server (8124) — event store + message bus
-  - Eureka (8070)      — service discovery
-```
-
----
-
-## Saga — Order Fulfillment Flow
-
-```
-1. Customer places order
-       |
-       v
-2. OrderCreatedEvent fires — Saga starts
-       |
-       v
-3. Saga queries inventoryId for each item
-   Sends ReserveInventoryCommand per item
-       |
-       |--- All items reserved? ---------> 4. ProcessPaymentCommand sent
-       |                                          |
-       |--- Any item failed?             |--- PaymentProcessedEvent
-             |                           |       |
-             v                           |       v
-       ReleaseInventory (compensation)   |   ConfirmInventoryReservation
-       CancelOrder                       |   ConfirmOrder
-       Saga ends — CANCELLED             |   Saga ends — CONFIRMED
-                                         |
-                                         |--- PaymentFailedEvent
-                                                 |
-                                                 v
-                                            ReleaseInventory (compensation)
-                                            CancelOrder
-                                            Saga ends — CANCELLED
-```
-
----
-
-## CQRS Pattern (per microservice)
-
-```
-Write Side                          Read Side
-----------                          ---------
-REST Controller                     REST Controller
-     |                                   |
-CommandGateway                      QueryGateway
-     |                                   |
-Interceptor (validate)              QueryHandler
-     |                                   |
-Aggregate (business logic)          Repository (H2)
-     |                                   ^
-AggregateLifecycle.apply(event)          |
-     |                              Projection
-     v                              (@EventHandler)
-Axon Event Store <------------------builds read model
-```
 
 ---
 
