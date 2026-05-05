@@ -1,0 +1,130 @@
+version: '3.8'
+
+services:
+
+  # Axon Server
+  axonserver:
+    image: axoniq/axonserver:4.6.11
+    container_name: axonserver
+    ports:
+      - "8024:8024"
+      - "8124:8124"
+    networks:
+      - ecom-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8024/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Eureka Server
+  eurekaserver:
+    build:
+      context: ./eurekaserver
+      dockerfile: Dockerfile
+    container_name: eurekaserver
+    ports:
+      - "8070:8070"
+    networks:
+      - ecom-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8070/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      axonserver:
+        condition: service_healthy
+
+  # ─── Order MS ────────────────────────────────────────────────────
+  order:
+    build:
+      context: ./order
+      dockerfile: Dockerfile
+    container_name: order
+    ports:
+      - "8080:8080"
+    networks:
+      - ecom-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:/data/order;AUTO_SERVER=true
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8070/eureka/
+      - AXON_AXONSERVER_SERVERS=axonserver:8124
+    volumes:
+      - order-data:/data
+    depends_on:
+      eurekaserver:
+        condition: service_healthy
+      axonserver:
+        condition: service_healthy
+
+  # Inventory MS
+  inventory:
+    build:
+      context: ./inventory
+      dockerfile: Dockerfile
+    container_name: inventory
+    ports:
+      - "8081:8081"
+    networks:
+      - ecom-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:/data/inventory;AUTO_SERVER=true
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8070/eureka/
+      - AXON_AXONSERVER_SERVERS=axonserver:8124
+    volumes:
+      - inventory-data:/data
+    depends_on:
+      eurekaserver:
+        condition: service_healthy
+      axonserver:
+        condition: service_healthy
+
+  # Payment MS
+  payment:
+    build:
+      context: ./payment
+      dockerfile: Dockerfile
+    container_name: payment
+    ports:
+      - "8082:8082"
+    networks:
+      - ecom-network
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:/data/payment;AUTO_SERVER=true
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8070/eureka/
+      - AXON_AXONSERVER_SERVERS=axonserver:8124
+    volumes:
+      - payment-data:/data
+    depends_on:
+      eurekaserver:
+        condition: service_healthy
+      axonserver:
+        condition: service_healthy
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8072:8072"
+    networks:
+      - ecom-network
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eurekaserver:8070/eureka/
+    depends_on:
+      eurekaserver:
+        condition: service_healthy
+
+# Networks
+networks:
+  ecom-network:
+    driver: bridge
+
+# Volumes
+volumes:
+  order-data:
+  inventory-data:
+  payment-data:

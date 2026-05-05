@@ -19,6 +19,19 @@ spring:
     hibernate:
       ddl-auto: none
     show-sql: true
+  spring:
+    datasource:
+      url: ${SPRING_DATASOURCE_URL:jdbc:h2:file:~/inventory;AUTO_SERVER=true}
+
+  eureka:
+    client:
+      serviceUrl:
+        defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8070/eureka/}
+
+  axon:
+    axonserver:
+      servers: ${AXON_AXONSERVER_SERVERS:localhost:8124}
+
 
 eureka:
   instance:
