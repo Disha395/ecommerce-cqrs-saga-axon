@@ -36,9 +36,10 @@
 		<spring-cloud.version>2023.0.3</spring-cloud.version>
 		<h2.version>2.2.224</h2.version>
 		<lombok.version>1.18.34</lombok.version>
-		<axon.version>4.6.11</axon.version>
+		<axon.version>4.9.3</axon.version>
 	</properties>
 	<modules>
+			<module>../api-gateway</module>
 		<module>common</module>
 	</modules>
 	<dependencies>
