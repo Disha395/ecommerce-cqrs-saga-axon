@@ -5,6 +5,7 @@ import com.example.common.commands.payment.ProcessPaymentCommand;
 import com.example.payment.rest.dto.ProcessPaymentRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -26,7 +27,7 @@ public class PaymentCommandController {
     @PostMapping
     @Operation(summary = "Process a payment")
     public ResponseEntity<String> processPayment(
-            @RequestBody ProcessPaymentRequest request) {
+            @Valid @RequestBody ProcessPaymentRequest request) {
 
         String paymentId = UUID.randomUUID().toString();
         log.info("Dispatching ProcessPaymentCommand for orderId: {}",

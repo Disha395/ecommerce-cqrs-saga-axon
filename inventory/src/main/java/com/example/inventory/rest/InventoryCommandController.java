@@ -4,6 +4,7 @@ import com.example.common.commands.inventory.CreateInventoryCommand;
 import com.example.inventory.rest.dto.CreateInventoryRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -25,7 +26,7 @@ public class InventoryCommandController {
     @PostMapping
     @Operation(summary = "Create inventory for a product")
     public ResponseEntity<String> createInventory(
-            @RequestBody CreateInventoryRequest request) {
+           @Valid @RequestBody CreateInventoryRequest request) {
 
         String inventoryId = UUID.randomUUID().toString();
         log.info("Dispatching CreateInventoryCommand for productId: {}",

@@ -6,6 +6,7 @@ import com.example.common.commands.order.CreateOrderCommand;
 import com.example.order.rest.dto.CreateOrderRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -26,7 +27,7 @@ public class OrderCommandController {
 
     @PostMapping
     @Operation(summary = "Place a new order")
-    public ResponseEntity<String> createOrder(@RequestBody CreateOrderRequest request) {
+    public ResponseEntity<String> createOrder(@Valid @RequestBody CreateOrderRequest request) {
         String orderId = UUID.randomUUID().toString();
         log.info("Dispatching CreateOrderCommand for orderId: {}", orderId);
 
