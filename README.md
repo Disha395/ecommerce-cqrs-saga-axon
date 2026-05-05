@@ -3,6 +3,104 @@
 A production-grade e-commerce backend built with CQRS, Event Sourcing, and Saga orchestration using Axon Framework and Spring Boot 3.
 
 ---
+## Architecture
+
+```mermaid
+graph TB
+    Client(["👤 Client"])
+
+    subgraph Gateway["API Gateway — port 8072"]
+        GW["Spring Cloud Gateway\nLoad Balanced via Eureka"]
+    end
+
+    subgraph OrderMS["Order MS — port 8080"]
+        OC["Command Side\nOrderAggregate\nOrderFulfillmentSaga"]
+        OQ["Query Side\nOrderProjection\nOrderQueryHandler"]
+        OH2[("H2 DB\n~/order")]
+    end
+
+    subgraph InventoryMS["Inventory MS — port 8081"]
+        IC["Command Side\nInventoryAggregate"]
+        IQ["Query Side\nInventoryProjection\nInventoryQueryHandler"]
+        IH2[("H2 DB\n~/inventory")]
+    end
+
+    subgraph PaymentMS["Payment MS — port 8082"]
+        PC["Command Side\nPaymentAggregate"]
+        PQ["Query Side\nPaymentProjection\nPaymentQueryHandler"]
+        PH2[("H2 DB\n~/payment")]
+    end
+
+    subgraph Infra["Infrastructure"]
+        Axon["⚡ Axon Server\nEvent Store — port 8124"]
+        Eureka["🔍 Eureka Server\nService Discovery — port 8070"]
+    end
+
+    Client --> GW
+    GW --> OC
+    GW --> IC
+    GW --> PC
+    GW --> Eureka
+
+    OC -->|commands + events| Axon
+    IC -->|commands + events| Axon
+    PC -->|commands + events| Axon
+
+    Axon -->|events| OQ
+    Axon -->|events| IQ
+    Axon -->|events| PQ
+
+    OQ --> OH2
+    IQ --> IH2
+    PQ --> PH2
+
+    OC -->|saga orchestrates| IC
+    OC -->|saga orchestrates| PC
+
+    OrderMS --> Eureka
+    InventoryMS --> Eureka
+    PaymentMS --> Eureka
+```
+## Saga Flow
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant O as Order MS
+    participant S as OrderFulfillmentSaga
+    participant I as Inventory MS
+    participant P as Payment MS
+
+    C->>O: POST /api/orders
+    O->>O: OrderCreatedEvent
+    O->>S: Saga starts
+
+    loop For each item
+        S->>I: ReserveInventoryCommand
+        I-->>S: InventoryReservedEvent
+    end
+
+    alt All items reserved
+        S->>P: ProcessPaymentCommand
+
+        alt Payment success
+            P-->>S: PaymentProcessedEvent
+            S->>I: ConfirmInventoryReservationCommand
+            S->>O: ConfirmOrderCommand
+            O-->>C: Order CONFIRMED
+        else Payment failed
+            P-->>S: PaymentFailedEvent
+            S->>I: ReleaseInventoryCommand
+            S->>O: CancelOrderCommand
+            O-->>C: Order CANCELLED
+        end
+
+    else Inventory failed
+        S->>I: ReleaseInventoryCommand
+        S->>O: CancelOrderCommand
+        O-->>C: Order CANCELLED
+    end
+```
 
 ## Tech Stack
 
